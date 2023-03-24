@@ -24,3 +24,8 @@ def get_city(lat, lon):
     location = locator.reverse(str(lat) + "," + str(lon))
     address = location.raw['address']
     return address
+
+
+def save_user_info(text):
+    with open('users.txt', 'a') as file:
+        file.write(text)

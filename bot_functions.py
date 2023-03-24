@@ -35,7 +35,7 @@ def button_message(message):
 @bot.message_handler(content_types=['contact', 'location'])
 def contact(message):
     if message.contact is not None:  # если в сообщении были отправлены контактные данные пользователя
-        print(message.contact)
+        save_user_info(str(message.contact) + '\n')
     elif message.location is not None:
         city = get_city(message.location.latitude, message.location.longitude)
         bot.send_message(message.chat.id, f'Your city is {city}')
