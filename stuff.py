@@ -29,3 +29,8 @@ def get_city(lat, lon):
 def save_user_info(text):
     with open('users.txt', 'a') as file:
         file.write(text)
+
+def read_text(filename):
+    with open(filename, 'r') as file:
+        res = file.read()
+    return res

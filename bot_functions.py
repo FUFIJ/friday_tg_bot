@@ -3,7 +3,7 @@ from stuff import *  # импортировать все функции из ф�
 
 import os
 
-bot = telebot.TeleBot(os.environ.get('KEY'))
+bot = telebot.TeleBot(os.environ.get('TELEGRAM_KEY'))
 
 answers = {
     'git': 'Введи запрос для поиска в формате "GIT Запрос Язык_Программирования" и я дам тебе ссылки на 5 случайных репозиториев',
@@ -14,9 +14,12 @@ answers = {
 @bot.message_handler(commands=['start', 'help', 'dog'])
 def commands(message):
     if message.text == '/start':
-        bot.send_message(message.chat.id, f'Привет, {message.chat.username}!')
+        bot.send_message(message.chat.id, f'Привет, {message.chat.username}!👋')
+        ans = read_text('templates/help.txt')
+        bot.send_message(message.chat.id, text=ans, parse_mode='html')
     elif message.text == '/help':
-        bot.send_message(message.chat.id, answers['help'])
+        ans = read_text('templates/help.txt')
+        bot.send_message(message.chat.id, text=ans, parse_mode='html')
     elif message.text == '/dog':
         img = get_image()
         bot.send_photo(message.chat.id, photo=img)
