@@ -25,14 +25,14 @@ def commands(message):
         bot.send_photo(message.chat.id, photo=img)
 
 
-@bot.message_handler(commands=['button'])
+@bot.message_handler(commands=['weather'])
 def button_message(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = telebot.types.KeyboardButton('Поделиться номером телефона', request_contact=True)
+    #btn1 = telebot.types.KeyboardButton('Поделиться номером телефона', request_contact=True)
     btn2 = telebot.types.KeyboardButton('Поделиться локацией', request_location=True)
-    markup.add(btn1)
+    #markup.add(btn1)
     markup.add(btn2)
-    bot.send_message(message.chat.id, 'Хочешь поделиться телефоном или локацией?', reply_markup=markup)
+    bot.send_message(message.chat.id, 'Чтобы узнать погоду, поделись со мной локацией.', reply_markup=markup)
 
 
 @bot.message_handler(content_types=['contact', 'location'])
@@ -40,8 +40,13 @@ def contact(message):
     if message.contact is not None:  # если в сообщении были отправлены контактные данные пользователя
         save_user_info(str(message.contact) + '\n')
     elif message.location is not None:
-        city = get_city(message.location.latitude, message.location.longitude)
-        bot.send_message(message.chat.id, f'Your city is {city}')
+        lat = message.location.latitude
+        long = message.location.longitude
+        city = get_city(lat, long)
+        msg = f'Твой город: {city}'
+        forecast = get_forecast(lat, long)
+        bot.send_message(message.chat.id, msg)
+        bot.send_message(message.chat.id, text=forecast, parse_mode='html')
 
 
 @bot.message_handler(content_types=['text'])  # декоратор
