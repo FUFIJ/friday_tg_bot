@@ -47,6 +47,10 @@ def get_forecast(lat, long):
         'units': 'metric',
         'lang': 'ru',
     }
+    weather_codes = {'пасмурно': '☁️ пасмурно', 'облачно с прояснениями': '🌤️ облачно с прояснениями',
+                     'небольшой дождь': '🌨 небольшой дождь', 'переменная облачность': '🌥️ переменная облачность',
+                     'ясно': '☀️ ясно', 'небольшой снег': '❄️ небольшой снег', 'снег': '❄️ снег'}
+    weather = ''
     resp = r.get(url, params=params).json()
     text = '<strong>{}</strong> <i>{}</i>: \n{}C, {}\n\n'
     res = ''
@@ -55,7 +59,12 @@ def get_forecast(lat, long):
         date = datetime.fromtimestamp(data['dt'])  # конвертируем timestamp в дату
         date_res = date.strftime('%d.%m.%y')  # 31.03.2023
         temp = data['main']['temp']
-        weather = data['weather'][0]['description']
+
+        try:  # попытаться
+            weather = weather_codes[data['weather'][0]['description']]  # достать код погоды из словаря (с эмоджи)
+        except KeyError:  # если не получается, отдаем его в обычном виде (как присылает OWM)
+            weather = data['weather'][0]['description']
+
         if date.hour == 15:
             daytime = 'днём'
             res += text.format(date_res, daytime, temp, weather)
