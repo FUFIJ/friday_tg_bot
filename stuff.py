@@ -42,7 +42,7 @@ def get_forecast(lat, long):
     url = 'https://api.openweathermap.org/data/2.5/forecast'
     params = {
         'lat': lat,
-        'long': long,
+        'lon': long,
         'appid': os.environ.get('WEATHER_KEY'),
         'units': 'metric',
         'lang': 'ru',
