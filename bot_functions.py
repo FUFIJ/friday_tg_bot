@@ -42,3 +42,12 @@ def repeat_message(message):
         res = git_search(msg[1], msg[2])
         msg = "Вот, что я смог найти:\n" + res
         bot.send_message(message.chat.id, text=msg, parse_mode='html')
+@bot.message_handler(commands=['horo'])
+def ask_zodiac(message):
+    signs = ['Овен', 'Телец', 'Близнецы', 'Рак',
+             'Лев', 'Дева', 'Весы', 'Скорпион',
+             'Стрелец', 'Козерог', 'Водолей', 'Рыбы']
+    markup = telebot.types.ReplyKeyboard(row_width=3)
+    buttons = [telebot.types.KeyboardButton(name) for name in signs]
+    markup.add(*buttons)
+    bot.send_message(message.chat.id, 'Выбери свой знак зодиака:', reply_markup=markup)
